@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="todos" class="position-absolute shadow w-50 start-50 translate-middle">
+
+    <div id="addDiv" class="addDiv alert alert-success">
+      <div>
+        <h2>Add new todo</h2>
+      </div>
+      <div>
+        <button class="btn btn-success px-3" ><a style="text-decoration: none;" href="/add">+</a></button>
+      </div>
+    </div>
+
+
+    {% if todos|length == 0 %}
+    <div class="py-2 pt-3 bg-body text-center">
+      <p>You don't have any todo at the moment! </p>
+    </div>
+    {% else %}
+    <div id= "accordion" class="container position-absolute ">
+      <div class="py-3 px-3 bg-body ">
+        <div class="accordion" id="accordionExample">
+          {% for todo in todos %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <div id="accHeader">
+                    <div>
+                      {% if todo.status == 'C' %}
+                      ☑️ &nbsp;
+                      {% else %}
+                      &nbsp;☐ &nbsp;
+                      {% endif %}
+                    </div>
+                    <div>
+                      <strong> {{forloop.counter}}: &nbsp; </strong> 
+                      {{todo.title}}  
+                    </div>
+                  </div>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+              {{todo.description}}
+              </div>
+              <div id="edit" class="accordion-body">
+              created: {{todo.date}}
+              <div>
+                <button type="submit"><a  href="/edit/{{todo.id}} ">edit</a></button>
+              </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+

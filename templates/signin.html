@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="position-absolute shadow top-50 start-50 translate-middle">
+
+  <div class="alert alert-success">
+    <h1>Sign-In</h1>
+  </div>
+
+  <div class="py-3 px-5 mb-2 bg-body">
+    <form method="post" action="http://127.0.0.1:8000">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username">
+          <div id="emailHelp" class="form-text">We'll never share your details with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password1" id="password1">
+        </div>
+
+        {% for message in messages %}
+        {% if message.tag == 'success' %}
+        <script>
+          Swal.fire(
+          ' {{message}} ',
+          '',
+          'success'
+        )
+        </script>
+        {% elif message.tag == error %}
+        <script>
+          Swal.fire(
+          ' {{message}} ',
+          '',
+          'error'
+        )
+        </script>
+        {% endif %}
+        {% endfor %}
+
+        <!-- {% for message in messages %}
+        <div class="mb-3">
+          Message: {{ message }}
+        </div>
+        {% endfor %} -->
+        <input type="submit" value="Sign-In">
+      </form>
+      <p> new user? <a href="http://127.0.0.1:8000/signup">Sign-Up Here</a> </p>
+  </div>
+</div>
+
+
+{% endblock %}
+

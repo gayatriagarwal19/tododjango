@@ -1,0 +1,32 @@
+body{
+    background-image: linear-gradient(to left, #f53844, #42378f);
+}
+
+#todos{
+    position: absolute;
+    margin-top: 100px;
+}
+
+#accHeader{
+    display: flex;
+    justify-content: space-between;
+}
+
+#edit{
+    display: flex;
+    justify-content: space-between;
+}
+
+#edit a{
+    text-decoration: none;
+}
+
+div#addDiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+ 
+#addBtn:link{
+    color: white;
+}

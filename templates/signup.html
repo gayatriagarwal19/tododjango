@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="position-absolute shadow top-50 start-50 translate-middle">
+
+  <div class="alert alert-success">
+    <h1>New user? Sign up here</h1>
+  </div>
+  <div class="py-2 px-5 mb-2 bg-body">
+  <form  method="post" action="signup">
+      {% csrf_token %}
+      <div class="mb-1">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" id="username" required>
+      </div>
+      <div class="mb-1">
+        <label for="photo" class="form-label">Profile Photo</label>
+        <input type="file" class="form-control" name="photo" id="photo" required>
+    </div>
+      <div class="row">
+          <div class="col mb-1">
+              <label for="fname" class="form-label">First Name</label>
+              <input type="text" class="form-control" name="fname" id="fname" required >
+          </div>
+          <div class="col mb-1">
+              <label for="lname" class="form-label">Last Name </label>
+              <input type="text" class="form-control" name = "lname" id="lname" required >
+          </div>
+      </div>
+      <div class="mb-1">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" name= "email" id="email" required >
+      </div>
+      <div class="mb-1">
+        <label for="number" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" name="number" id="number" required>
+    </div>
+    <div class="row">
+      <div class="col mb-1">
+        <label for="password1" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password1" id="password1" required >
+      </div>
+      <div class="col mb-1">
+          <label for="password2" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" name="password2" id="password2" required >
+      </div>
+    </div>
+      <p>Already a user? Sign-In <a href="http://127.0.0.1:8000/ "> Here </a></p>
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
+    </form>
+</div>
+
+{% for message in messages %}
+    {% if message.tag == 'warning' %}
+    <script>
+      print("running")
+      Swal.fire(
+      ' {{message}} ',
+      '',
+      'warning'
+    )
+    </script>
+    {% endif %}
+    {% endfor %}
+
+
+{% endblock %}
+    
+    
+

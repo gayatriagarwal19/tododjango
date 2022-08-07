@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="position-absolute shadow w-25 top-50 start-50 translate-middle">
+    
+    <div class="alert alert-success">
+        <h2>Update your todo here</h2>
+    </div>
+
+    <div class= "py-3 px-1 mb-5 bg-body">
+       <div class="container">
+        <form method="post" action="">
+            {% csrf_token %}
+
+            {{form.as_p}}
+
+            <!-- <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control"  value="{{title}}" name="title" id="title">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" value="{{description}}" name="description" id="description">
+            </div>
+              <br>
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status"  class="form-select">
+                  {% if todos.status == 'C' %}
+                      <option selected>Completed</option>
+                      <option>Pending</option>
+                      {% else %}
+                      <option >Completed</option>
+                      <option selected>Pending</option>
+                      {% endif %}
+                </select>
+              </div> -->
+
+            <br>
+            <button style="text-decoration: none;" type="submit">UPDATE</button>
+            <button style="text-decoration: none;" type="submit"><a href="/delete/{{todo.id}}">delete</a></button>
+        </form>
+       </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+   

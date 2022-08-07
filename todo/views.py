@@ -1,0 +1,198 @@
+from random import choices
+from turtle import title
+from django.http import HttpResponse
+from django.shortcuts import  redirect, render
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib import messages
+from todo.forms import todoForm
+from todo.models import todo , profile
+from django.contrib.auth import authenticate, login , logout
+
+# Create your views here.
+def signin(request):
+
+    if request.method == "POST":
+        username = request.POST['username']
+        password1 = request.POST['password1']
+
+        user = authenticate( username = username , password = password1 )
+
+        if user is not None:
+            login(request, user)
+            return redirect('todos')
+
+        else:
+            messages.error(request, "Bad credentials")
+            return redirect('signin')
+    else:
+        return render(request , 'signin.html')
+
+
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        photo = request.POST['photo']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        number = request.POST['number']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 == password2:
+            if User.objects.filter(username = username).exists():
+                messages.warning(request, "Username already exists")
+                return redirect(signup)
+            elif User.objects.filter(email = email).exists():
+                messages.warning(request, "Email already used")
+                return redirect(signup)
+            else:
+                myuser = User.objects.create_user(username = username, email = email ,password = password1)
+                myuser.first_name = fname
+                myuser.last_name = lname
+                user = myuser.save()
+                myuser_profile = profile.objects.create(User= user, ProfilePicture = photo, PhoneNumber = number)
+                
+
+                
+                myuser_profile.save() 
+                # user_profile.user = user
+                # user_profile.save()
+
+                messages.success(request, "Your account has been successfully created")
+
+                return render(request, 'signin.html')
+        
+        else:
+            messages.warning(request, "Password incorrect")
+            return redirect(signup)
+    else:
+        return render(request , 'signup.html')
+
+
+def signout(request):
+    logout(request)
+    messages.success(request, 'logged out successfully!')
+    return render(request, 'signin.html')
+
+def todos(request):
+    if request.user.is_authenticated:
+        user = request.user
+        todos = todo.objects.filter(user = user)
+        return render(request, 'todos.html', context={'todos': todos})
+
+def add(request):
+    form = todoForm()
+    return render(request, 'add.html', context={'form': form})
+
+def add_todos(request):
+    if request.user.is_authenticated:
+        user = request.user
+        print(user)
+
+        # title = request.POST['title']
+        # description = request.POST['description']
+        # status = request.POST['status']
+
+        # context ={
+        #     'title' : title,
+        #     'description' : description,
+        #     'status' : status,
+        # }
+        # print(context)
+
+        # todos = todo.objects.create(title = title, description = description, status = status)
+        # todos.user = user
+        # todos.save()
+        # print(todos)
+
+    form = todoForm(request.POST)
+    if form.is_valid():
+        print(form.cleaned_data)
+        todo =form.save(commit=False)
+        todo.user = user
+        todo.save()
+        print(todo)
+        return redirect("todos")
+    else:
+        return render(request, 'add.html', context={'form': form})
+        # return render(request, 'add.html')
+
+    
+
+def edit(request, id):
+    todos = todo.objects.get(pk =id)
+    form = todoForm(instance= todos)
+
+    if request.method == 'POST':
+        form = todoForm( request.POST ,instance= todos)
+        if form.is_valid():
+            todos.save()
+            return redirect("todos")
+
+    context ={
+        'todo' : todos,
+        'form': form,
+    }
+    return render(request, 'edit.html', context)
+
+
+
+    # # newwwwwwwwwwwwwww
+    # todos = todo.objects.get(pk = id)
+
+    
+        
+        
+     
+    #     # title = title( request.POST, instance = todos)
+    #     # description = description( request.POST, instance = todos)
+    #     # status = status( request.POST, instance = todos)
+    #     # todos.save()
+    #     # return redirect("todos")
+    #     # todos.title = request.POST.get('title')
+    #     # todos.description = request.POST.get('description')
+    #     # todos.status = request.POST.get('status')
+    #     # todos.save()
+    #     # return redirect("todos")
+
+   
+
+    
+    
+    # if request.method == 'POST':
+    #     todos.title = request.POST['title']
+    #     todos.description = request.POST['description']
+    #     todos.status = request.POST['status']
+    #     todos.save();
+    #     return redirect('todos')
+    # context = {
+    # 'todo' : todos,
+    # 'title': todos.title,
+    # 'description':todos.description,
+    # 'status': todos.status,
+    # }
+    # print(todos.status)
+    # return render(request, 'edit.html', context)
+
+
+
+def delete(request, id):
+    todo.objects.get(pk = id).delete()
+    return redirect('todos')
+
+
+# def profile_page(request):
+#     if request.user.is_authenticated:
+#         user = request.user
+#         profile.objects.filter(user = user)
+#         # print(user.username)
+#         # print(user.profile.PhoneNumber)
+#         context = {
+#             'profile' : profile.ProfilePicture,
+#             'number' : profile.PhoneNumber, 
+#         }
+#         print(user)
+#         return render(request, 'profile.html', context)
