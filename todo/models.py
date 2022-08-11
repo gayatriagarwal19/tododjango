@@ -1,4 +1,8 @@
+from cProfile import Profile
+from distutils.command.upload import upload
+from email.mime import image
 from pyexpat import model
+from tkinter import CASCADE
 from turtle import title
 from django.db import models
 from django.contrib.auth.models import User
@@ -20,12 +24,13 @@ class todo(models.Model):
     def __str__(self):
         return self.title
 
-class profile(models.Model):
-    User = models.OneToOneField(User,null=True, on_delete=models.CASCADE)
-    ProfilePicture = models.ImageField(upload_to='images', null= True)
-    PhoneNumber = models.IntegerField(blank=False)
 
+class profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    ProfilePhoto = models.FileField(upload_to = 'images' ,null = True)
+    PhoneNumber = models.IntegerField(null=True)
     
-        
+    # def __str__(self):
+    #     return self.user
 
  

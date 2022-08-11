@@ -11,10 +11,10 @@
     <div class="py-2 px-1 mb-5 bg-body">
         <form method="post" action="/add_todos">
             {% csrf_token %}
-            {{form.as_p}}
+            <!-- {{form.as_p}} -->
 
 
-            <!-- <div class="mb-3">
+            <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" name="title" id="title">
             </div>
@@ -22,12 +22,12 @@
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" name="description" id="description">
             </div>
-            <p>Status:</p>
+            <!-- <p>Status:</p>
             <select class="form-select" aria-label="Default select example">
                 <option selected>----</option>
                 <option value="1">completed</option>
                 <option value="2">pending</option>
-              </select>
+              </select> -->
               <br>
               <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
@@ -36,7 +36,7 @@
                   <option>Completed</option>
                   <option>Pending</option>
                 </select>
-              </div> -->
+              </div>
             <input type="submit" value="ADD" class="btn btn-info">
         </form>
     </div>

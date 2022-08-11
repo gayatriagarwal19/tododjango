@@ -1,5 +1,8 @@
 from django.urls import path
 from todo import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.signin , name = 'signin'),
@@ -10,5 +13,8 @@ urlpatterns = [
     path('add_todos', views.add_todos, name = 'add_todos'),
     path('edit/<int:id>', views.edit , name = 'edit'),
     path('delete/<int:id>',views.delete, name= 'delete'),
-    # path('profile_page',views.profile_page, name= 'profile_page'),
+    path('profile_page',views.Profile, name= 'Profile'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

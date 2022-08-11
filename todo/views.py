@@ -1,12 +1,12 @@
 from random import choices
 from turtle import title
 from django.http import HttpResponse
-from django.shortcuts import  redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from todo.forms import todoForm
-from todo.models import todo , profile
+from todo.models import todo, profile
 from django.contrib.auth import authenticate, login , logout
 
 # Create your views here.
@@ -33,7 +33,7 @@ def signin(request):
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
-        photo = request.POST['photo']
+        photo = request.FILES.get('photo')
         fname = request.POST['fname']
         lname = request.POST['lname']
         email = request.POST['email']
@@ -53,9 +53,7 @@ def signup(request):
                 myuser.first_name = fname
                 myuser.last_name = lname
                 user = myuser.save()
-                myuser_profile = profile.objects.create(User= user, ProfilePicture = photo, PhoneNumber = number)
-                
-
+                myuser_profile = profile.objects.create(user= myuser, ProfilePhoto = photo, PhoneNumber = number)
                 
                 myuser_profile.save() 
                 # user_profile.user = user
@@ -92,90 +90,35 @@ def add_todos(request):
         user = request.user
         print(user)
 
-        # title = request.POST['title']
-        # description = request.POST['description']
-        # status = request.POST['status']
-
-        # context ={
-        #     'title' : title,
-        #     'description' : description,
-        #     'status' : status,
-        # }
-        # print(context)
-
-        # todos = todo.objects.create(title = title, description = description, status = status)
-        # todos.user = user
-        # todos.save()
-        # print(todos)
-
-    form = todoForm(request.POST)
-    if form.is_valid():
-        print(form.cleaned_data)
-        todo =form.save(commit=False)
-        todo.user = user
-        todo.save()
-        print(todo)
+        title = request.POST['title']
+        description = request.POST['description']
+        status = request.POST['status']
+        todos = todo.objects.create(title = title, description = description, status = status)
+        todos.user = user
+        todos.save()
+        print(todos)
         return redirect("todos")
     else:
-        return render(request, 'add.html', context={'form': form})
-        # return render(request, 'add.html')
+        return render(request, 'add.html')
 
     
 
 def edit(request, id):
-    todos = todo.objects.get(pk =id)
-    form = todoForm(instance= todos)
-
+    todos = todo.objects.get(pk = id)  
     if request.method == 'POST':
-        form = todoForm( request.POST ,instance= todos)
-        if form.is_valid():
-            todos.save()
-            return redirect("todos")
-
-    context ={
-        'todo' : todos,
-        'form': form,
+        todos.title = request.POST['title']
+        todos.description = request.POST['description']
+        todos.status = request.POST['status']
+        todos.save();
+        return redirect('todos')
+    context = {
+    'todo' : todos,
+    'title': todos.title,
+    'description':todos.description,
+    'status': todos.status,
     }
+    print(todos.status)
     return render(request, 'edit.html', context)
-
-
-
-    # # newwwwwwwwwwwwwww
-    # todos = todo.objects.get(pk = id)
-
-    
-        
-        
-     
-    #     # title = title( request.POST, instance = todos)
-    #     # description = description( request.POST, instance = todos)
-    #     # status = status( request.POST, instance = todos)
-    #     # todos.save()
-    #     # return redirect("todos")
-    #     # todos.title = request.POST.get('title')
-    #     # todos.description = request.POST.get('description')
-    #     # todos.status = request.POST.get('status')
-    #     # todos.save()
-    #     # return redirect("todos")
-
-   
-
-    
-    
-    # if request.method == 'POST':
-    #     todos.title = request.POST['title']
-    #     todos.description = request.POST['description']
-    #     todos.status = request.POST['status']
-    #     todos.save();
-    #     return redirect('todos')
-    # context = {
-    # 'todo' : todos,
-    # 'title': todos.title,
-    # 'description':todos.description,
-    # 'status': todos.status,
-    # }
-    # print(todos.status)
-    # return render(request, 'edit.html', context)
 
 
 
@@ -184,15 +127,9 @@ def delete(request, id):
     return redirect('todos')
 
 
-# def profile_page(request):
-#     if request.user.is_authenticated:
-#         user = request.user
-#         profile.objects.filter(user = user)
-#         # print(user.username)
-#         # print(user.profile.PhoneNumber)
-#         context = {
-#             'profile' : profile.ProfilePicture,
-#             'number' : profile.PhoneNumber, 
-#         }
-#         print(user)
-#         return render(request, 'profile.html', context)
+def Profile(request):
+    context = {
+        'profile' : profile.objects.filter(user = request.user)
+    }
+    print(profile.objects.all)
+    return render(request, 'profile.html', context)

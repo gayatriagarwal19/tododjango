@@ -13,9 +13,9 @@
         <form method="post" action="">
             {% csrf_token %}
 
-            {{form.as_p}}
+            <!-- {{form.as_p}} -->
 
-            <!-- <div class="mb-3">
+            <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control"  value="{{title}}" name="title" id="title">
             </div>
@@ -35,7 +35,7 @@
                       <option selected>Pending</option>
                       {% endif %}
                 </select>
-              </div> -->
+              </div>
 
             <br>
             <button style="text-decoration: none;" type="submit">UPDATE</button>
