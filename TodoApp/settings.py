@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-from email.message import Message
 import os
 from django.contrib.messages import constants as messages
 from pathlib import Path
@@ -131,8 +130,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MESSAGE_TAGS = {
-    messages.SUCCESS : 'alert-success',
-    messages.ERROR : 'alert-error',
-    messages.WARNING : 'alert-warning',
-
+    messages.SUCCESS : 'success',
+    messages.ERROR : 'error',
+    messages.WARNING : 'warning',
+    messages.INFO : 'info'
 }

@@ -23,25 +23,17 @@
             <input type="password" class="form-control" name="password1" id="password1">
         </div>
 
-        {% for message in messages %}
-        {% if message.tag == 'success' %}
         <script>
+          {% if messages %}
+          {% for message in messages %}
           Swal.fire(
-          ' {{message}} ',
-          '',
-          'success'
-        )
+            '{{ message }}',
+            '',
+            '{{ message.tags }}'
+          )
+          {% endfor %}
+          {% endif %}
         </script>
-        {% elif message.tag == error %}
-        <script>
-          Swal.fire(
-          ' {{message}} ',
-          '',
-          'error'
-        )
-        </script>
-        {% endif %}
-        {% endfor %}
 
         <!-- {% for message in messages %}
         <div class="mb-3">

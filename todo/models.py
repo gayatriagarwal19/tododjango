@@ -30,7 +30,7 @@ class profile(models.Model):
     ProfilePhoto = models.FileField(upload_to = 'images' ,null = True)
     PhoneNumber = models.IntegerField(null=True)
     
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return f'{self.user}'
 
  
