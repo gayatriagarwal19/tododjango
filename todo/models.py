@@ -2,7 +2,8 @@ from cProfile import Profile
 from distutils.command.upload import upload
 from email.mime import image
 from pyexpat import model
-from tkinter import CASCADE
+# from tkinter import CASCADE
+from django.db.models.deletion import CASCADE
 from turtle import title
 from django.db import models
 from django.contrib.auth.models import User
