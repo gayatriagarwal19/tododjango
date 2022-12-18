@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<div id="todos" class="position-absolute shadow w-50 start-50 translate-middle">
+<div id="todos" class="container w-50 my-5  ">
 
-    <div id="addDiv" class="addDiv alert alert-success">
+    <div id="addDiv" class="addDiv shadow alert alert-success">
       <div>
         <h2>Add new todo</h2>
       </div>
@@ -15,11 +15,11 @@
 
 
     {% if todos|length == 0 %}
-    <div class="py-2 pt-3 bg-body text-center">
+    <div class="py-3 pt-3 bg-body text-center">
       <p>You don't have any todo at the moment! </p>
     </div>
     {% else %}
-    <div id= "accordion" class="container position-absolute ">
+    <div id= "accordion" class="container">
       <div class="py-3 px-3 bg-body ">
         <div class="accordion" id="accordionExample">
           {% for todo in todos %}
